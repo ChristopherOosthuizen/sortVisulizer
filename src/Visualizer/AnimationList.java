@@ -1,6 +1,13 @@
 package Visualizer;
+import java.awt.Canvas;
+import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import javax.swing.Timer;
 
 public class AnimationList extends ArrayList<Integer> {
 	SortAnimation ani;
@@ -15,9 +22,9 @@ public class AnimationList extends ArrayList<Integer> {
 		ani = new SortAnimation(this);
 	}
 
-	public void show(int width, int height, int delay) throws InterruptedException {
-		ani.setSize(width, height);
-		ani.show();
+	public void show(int delay) throws InterruptedException {
+		
+		
 		ani.go(delay);
 
 	}
@@ -52,10 +59,14 @@ public class AnimationList extends ArrayList<Integer> {
 		int[] change = { a, b };
 		ani.documentChange(this, b);
 	}
-	public SortAnimation getAnitmation() {
+	public SortAnimation getAnimation() {
 		return ani;
 	}
-
+	
+	public void setBounds(int x,int y,int width,int height) {
+		ani.setBounds(x, y, width, height);
+	}
+	
 	
 
 }

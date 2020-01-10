@@ -1,4 +1,5 @@
 package Visualizer;
+import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,7 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
-public class SortAnimation extends JFrame{
+public class SortAnimation extends Canvas{
 	private ArrayList<Integer> list;
 	private ArrayList<ArrayList<Integer>> changes;
 	private ArrayList<Integer> changesSpots;
@@ -22,7 +23,7 @@ public class SortAnimation extends JFrame{
 		
 		int spaceX=(int)(this.getWidth()*0.05);
 		int spacersX=this.getWidth()/list.size();
-		int oneUnit = ((int)(this.getHeight()-(this.getHeight()*0.07)))/list.stream().max((o1,o2)-> o1-o2).get();
+		int oneUnit = 1+((int)(this.getHeight()-(this.getHeight()*0.07)))/list.stream().max((o1,o2)-> o1-o2).get();
 		
 		for (int i = 0; i < list.size();i++) {
 			

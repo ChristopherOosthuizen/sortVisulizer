@@ -1,3 +1,4 @@
+package Visualizer;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,7 +24,7 @@ public class SortAnimation extends JFrame{
 		int spacersX=this.getWidth()/list.size();
 		int oneUnit = ((int)(this.getHeight()-(this.getHeight()*0.07)))/list.stream().max((o1,o2)-> o1-o2).get();
 		
-		for(int i=0; i<list.size();i++) {
+		for (int i = 0; i < list.size();i++) {
 			
 			int size = list.get(i)*oneUnit*(int)(this.getHeight()*0.003);
 			if(i != selectedSpot)

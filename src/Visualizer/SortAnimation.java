@@ -1,16 +1,16 @@
 package Visualizer;
 
-import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class SortAnimation extends Canvas {
+public class SortAnimation extends JPanel {
 	private boolean isFirst;
 	private ArrayList<Integer> list;
 	private ArrayList<ArrayList<Integer>> changes;
@@ -21,15 +21,16 @@ public class SortAnimation extends Canvas {
 	private AtomicInteger times;
 
 	public void paint(Graphics g) {
+		super.paint(g);
 		int height =this.getHeight();
 		int width =this.getWidth();
 		int spaceY = (int) (this.getHeight() * 0.99);
-	
+		
 		
 		int spaceX = (int) ((this.getWidth())-spaceY)/(list.size());
 		int spacersX = this.getWidth() / list.size();
 		int oneUnit = 1+ ((int) (height- (height * 0.07))) / list.stream().max((o1, o2) -> o1 - o2).get();
-		if(isFirst) {
+		
 		for (int i = 0; i < list.size(); i++) {
 
 			int size = list.get(i) * oneUnit * (int) (height * 0.003);
@@ -39,7 +40,7 @@ public class SortAnimation extends Canvas {
 				g.fillRect((spaceX)+i*spacersX, spaceY - size, spacersX, size);
 			
 			
-		}
+		
 		}
 		
 		

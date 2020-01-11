@@ -1,5 +1,7 @@
 package Visualizer;
 
+import java.util.Collections;
+
 public class ExampleSorts {
 	public static void insetionSort(AnimationList list) {
 		for (int i = 1; i < list.size(); i++) {
@@ -45,8 +47,7 @@ public class ExampleSorts {
 	public static void BogoSort(AnimationList list) {
 		boolean isSorted =false;
 		while(!isSorted) {
-		for(Integer i: list)
-			list.swap((int)(Math.random()*list.size()), (int)(Math.random()*list.size()));
+		Collections.shuffle(list);
 		isSorted = true;
 		
 		for(int i=1; i< list.size();i++) {

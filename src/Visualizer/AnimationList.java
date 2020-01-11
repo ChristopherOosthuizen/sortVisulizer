@@ -1,4 +1,5 @@
 package Visualizer;
+
 import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -22,11 +23,33 @@ public class AnimationList extends ArrayList<Integer> {
 		ani = new SortAnimation(this);
 	}
 
-	public void show(int delay) throws InterruptedException {
-		
-		
-		ani.go(delay);
+	public void play(int delay) throws InterruptedException {
 
+		ani.documentChange(this, -1);
+		ani.play(delay);
+
+	}
+	public boolean isRunning() {
+		return ani.isRewindRunning()||ani.isPlayRunning();
+	}
+	public boolean isPlaying() {
+		return ani.isPlayRunning();
+	}
+	public boolean isRewindRunning() {
+		return ani.isRewindRunning();
+	}
+
+	public void rewind(int delay) throws InterruptedException {
+
+		ani.documentChange(this, this.size());
+		ani.rewind(delay);
+
+	}
+
+	@Override
+	public Integer get(int index) {
+		// ani.documentChange(this, index);
+		return super.get(index);
 	}
 
 	@Override
@@ -59,14 +82,25 @@ public class AnimationList extends ArrayList<Integer> {
 		int[] change = { a, b };
 		ani.documentChange(this, b);
 	}
+
 	public SortAnimation getAnimation() {
 		return ani;
 	}
-	
-	public void setBounds(int x,int y,int width,int height) {
+
+	public void setBounds(int x, int y, int width, int height) {
 		ani.setBounds(x, y, width, height);
 	}
-	
-	
+
+	public void pause() {
+		ani.pause();
+	}
+
+	public void frameUp() {
+		ani.frameUp();
+	}
+
+	public void frameDown() {
+
+	}
 
 }

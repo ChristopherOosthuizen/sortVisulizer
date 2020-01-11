@@ -5,67 +5,124 @@ import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.swing.Timer;
 
 public class SortAnimation extends Canvas {
+	private boolean isFirst;
 	private ArrayList<Integer> list;
 	private ArrayList<ArrayList<Integer>> changes;
 	private ArrayList<Integer> changesSpots;
 	private int selectedSpot;
-	private Timer timer;
+	private Timer forwardTimer;
+	private Timer backwardTimer;
 	private AtomicInteger times;
 
 	public void paint(Graphics g) {
-		super.paint(g);
+		int height =this.getHeight();
+		int width =this.getWidth();
 		int spaceY = (int) (this.getHeight() * 0.99);
-
-		int spaceX = (int) (this.getWidth() * 0.05);
+	
+		
+		int spaceX = (int) ((this.getWidth())-spaceY)/(list.size());
 		int spacersX = this.getWidth() / list.size();
-		int oneUnit = 1
-				+ ((int) (this.getHeight() - (this.getHeight() * 0.07))) / list.stream().max((o1, o2) -> o1 - o2).get();
-
+		int oneUnit = 1+ ((int) (height- (height * 0.07))) / list.stream().max((o1, o2) -> o1 - o2).get();
+		if(isFirst) {
 		for (int i = 0; i < list.size(); i++) {
 
-			int size = list.get(i) * oneUnit * (int) (this.getHeight() * 0.003);
+			int size = list.get(i) * oneUnit * (int) (height * 0.003);
 			if (i != selectedSpot)
-				g.drawRect((spaceX), spaceY - size, spacersX, size);
+				g.drawRect((spaceX)+i*spacersX, spaceY - size, spacersX, size);
 			else
-				g.fillRect((spaceX), spaceY - size, spacersX, size);
-			spaceX += spacersX;
+				g.fillRect((spaceX)+i*spacersX, spaceY - size, spacersX, size);
+			
+			
 		}
-		if (times.get() == changes.size() - 1) {
-			timer.stop();
-
 		}
+		
+		
 	}
 
 	public SortAnimation(AnimationList list) {
 		this.selectedSpot = 0;
+		this.isFirst =true;
+		times = new AtomicInteger();
 		this.list = new ArrayList<Integer>(list);
 		this.changes = new ArrayList<ArrayList<Integer>>();
 		this.changesSpots = new ArrayList<Integer>();
+		
 	}
 
-	public void go(int delay) throws InterruptedException {
+	public synchronized void play(int delay) throws InterruptedException {
 
-		times = new AtomicInteger();
+		
 
-		timer = new Timer(delay, new ActionListener() {
+		forwardTimer = new Timer(delay, new ActionListener() {
+
+			@Override
+			
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if(forwardTimer != null||!backwardTimer.isRunning()) {
+				if (times.get() == changes.size() ) {
+					forwardTimer.stop();
+					
+				}
+				else
+				frameUp();
+				}
+				
+			}
+		});
+		forwardTimer.start();
+
+	}
+	public synchronized void rewind(int delay) {
+
+		
+
+		backwardTimer = new Timer(delay, new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				
+				if(backwardTimer !=null||!forwardTimer.isRunning()) {
+				if (times.get() == 0) {
+					backwardTimer.stop();
 
-				list = changes.get(times.get());
-				selectedSpot = changesSpots.get(times.get());
-				repaint();
-				times.incrementAndGet();
+				}else
+					frameDown();
+				}
 			}
 		});
-		timer.start();
+		
+		backwardTimer.start();
 
+	}
+	public void pause() {
+		backwardTimer.stop();
+		forwardTimer.stop();
+		
+	}
+	public void start() {
+		backwardTimer.start();
+	}
+
+	public void frameUp() {
+		list = changes.get(times.get());
+		selectedSpot = changesSpots.get(times.get());
+		repaint();
+		times.incrementAndGet();
+		
+	}
+	public void frameDown() {
+		list = changes.get(times.get());
+		selectedSpot = changesSpots.get(times.get());
+		repaint();
+		times.decrementAndGet();
 	}
 
 	private void swap(int[] a) {
@@ -73,7 +130,24 @@ public class SortAnimation extends Canvas {
 		list.set(a[0], list.get(a[1]));
 		list.set(a[1], temp);
 	}
-
+	public boolean isPlayRunning() {
+		return forwardTimer.isRunning();
+	}
+	
+	public boolean isRewindRunning() {
+		return backwardTimer.isRunning();
+	}
+	public ArrayList<Integer> changes(int change) {
+		ArrayList<Integer> changers = new ArrayList<Integer>();
+		ArrayList<Integer> setOne = changes.get(change);
+		ArrayList<Integer> setTwo = changes.get(change-1);
+		for(int i=0; i< changes.get(change).size();i++) {
+			if(!setOne.get(i).equals(setTwo.get(i)))
+				changers.add(i);
+		}
+		return changers;
+		
+	}
 	public void documentChange(AnimationList lister, int selectedSpot) {
 		changes.add(new ArrayList(lister));
 		changesSpots.add(selectedSpot);

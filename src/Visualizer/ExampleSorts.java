@@ -12,7 +12,7 @@ public class ExampleSorts {
 			list.set(index, temp);
 		}
 	}
-
+	
 	public static void selectionSort(AnimationList list) {
 		for (int i = 0; i < list.size() - 1; i++) {
 			int index = i;
@@ -25,7 +25,38 @@ public class ExampleSorts {
 			list.set(index, temp);
 		}
 	}
-
-	public static void mergeSort(AnimationList list) {
+	public static void bubbleSort(AnimationList list) {
+		int swaps =1;
+		for(int ii=0;ii<list.size()-1;ii++) {
+			swaps=0;
+			for(int i=0;i< list.size()-ii-1;i++) {
+				if(list.get(i) > list.get(i+1)) {
+					list.swap(i+1, i);
+					swaps++;
+				}
+					
+			}
+		}
+			
+		}
+	public static void quickSort(AnimationList list) {
+		
+	}
+	
+	//please don't O((n+1)!)
+	public static void BogoSort(AnimationList list) {
+		boolean isSorted =false;
+		while(!isSorted) {
+		for(Integer i: list)
+			list.swap((int)(Math.random()*list.size()), (int)(Math.random()*list.size()));
+		isSorted = true;
+		
+		for(int i=1; i< list.size();i++) {
+			if(list.get(i) <list.get(i-1)) {
+				isSorted=false;
+				break;
+			}
+		}
+		}
 	}
 }

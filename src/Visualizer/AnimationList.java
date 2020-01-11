@@ -25,7 +25,7 @@ public class AnimationList extends ArrayList<Integer> {
 	}
 	
 	
-	
+	//reintroduced basic arrayList methods with documentChanges
 	@Override
 	public Integer get(int index) {
 		animation.documentChange(this, index);
@@ -61,7 +61,7 @@ public class AnimationList extends ArrayList<Integer> {
 		int temp = this.get(a);
 		this.set(a, this.get(b));
 		this.set(b, temp);
-		int[] change = { a, b };
+		
 		animation.documentChange(this, b);
 	}
 
@@ -206,7 +206,7 @@ public class AnimationList extends ArrayList<Integer> {
 			}
 
 			public void start() {
-				backwardTimer.start();
+				forwardTimer.start();
 			}
 
 			public void frameUp() {
@@ -224,11 +224,7 @@ public class AnimationList extends ArrayList<Integer> {
 				times.decrementAndGet();
 			}
 
-			private void swap(int[] a) {
-				int temp = (int) list.get(a[0]);
-				list.set(a[0], list.get(a[1]));
-				list.set(a[1], temp);
-			}
+			
 
 			public boolean isPlayRunning() {
 				return forwardTimer.isRunning();
@@ -238,17 +234,6 @@ public class AnimationList extends ArrayList<Integer> {
 				return backwardTimer.isRunning();
 			}
 
-			public ArrayList<Integer> changes(int change) {
-				ArrayList<Integer> changers = new ArrayList<Integer>();
-				ArrayList<Integer> setOne = changes.get(change);
-				ArrayList<Integer> setTwo = changes.get(change - 1);
-				for (int i = 0; i < changes.get(change).size(); i++) {
-					if (!setOne.get(i).equals(setTwo.get(i)))
-						changers.add(i);
-				}
-				return changers;
-
-			}
 
 			public void documentChange(AnimationList lister, int selectedSpot) {
 				changes.add(new ArrayList<Integer>(lister));

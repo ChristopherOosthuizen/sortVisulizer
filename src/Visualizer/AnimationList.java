@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class AnimationList extends ArrayList<Integer> {
-	SortAnimation animation;
+	private SortAnimation animation;
 
 	public AnimationList() {
 		super();
@@ -23,7 +23,9 @@ public class AnimationList extends ArrayList<Integer> {
 		super(c);
 		animation = new SortAnimation(this);
 	}
-	
+	public SortAnimation getAnimation() {
+		return animation;
+	}
 	
 	//reintroduced basic arrayList methods with documentChanges
 	@Override
@@ -67,9 +69,7 @@ public class AnimationList extends ArrayList<Integer> {
 
 	
 	
-	public SortAnimation getAnimation() {
-		return animation;
-	}
+	
 
 	public void setBounds(int x, int y, int width, int height) {
 		animation.setBounds(x, y, width, height);

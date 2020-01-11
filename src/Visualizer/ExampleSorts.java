@@ -39,9 +39,7 @@ public class ExampleSorts {
 		}
 			
 		}
-	public static void quickSort(AnimationList list) {
-		
-	}
+	
 	
 	//please don't O((n+1)!)
 	public static void BogoSort(AnimationList list) {
